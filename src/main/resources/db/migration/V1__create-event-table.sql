@@ -1,0 +1,9 @@
+CREATE TABLE events (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    imgUrl VARCHAR(255) NOT NULL,
+    eventUrl VARCHAR(255) NOT NULL,
+    remote BOOLEAN NOT NULL,
+    date TIMESTAMP NOT NULL
+);
