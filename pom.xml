@@ -52,12 +52,12 @@
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
-			<version>10.15.2</version>
+			<version>9.22.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.7.3</version>
+			<version>42.2.24</version>
 		</dependency>
 	</dependencies>
 	<build>

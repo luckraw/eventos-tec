@@ -1,8 +1,0 @@
-CREATE TABLE coupon (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    code VARCHAR(255) NOT NULL,
-    discount INTEGER NOT NULL,
-    valid TIMESTAMP NOT NULL,
-    event_id BIGINT,
-    FOREIGN KEY (event_id) REFERENCES event(id) ON DELETE CASCADE
-);
