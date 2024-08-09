@@ -1,0 +1,1 @@
+ALTER TABLE coupon RENAME COLUMN date TO valid;
