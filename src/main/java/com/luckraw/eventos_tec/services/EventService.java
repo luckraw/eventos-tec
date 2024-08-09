@@ -2,12 +2,16 @@ package com.luckraw.eventos_tec.services;
 
 import com.luckraw.eventos_tec.domain.event.Event;
 import com.luckraw.eventos_tec.domain.event.EventRequestDTO;
+import com.luckraw.eventos_tec.domain.event.EventResponseDTO;
 import com.luckraw.eventos_tec.repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class EventService {
@@ -28,4 +32,18 @@ public class EventService {
     }
 
 
+    public List<EventResponseDTO> getEvents(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Event> eventsPage = eventRepository.findAll(pageable);
+        return eventsPage.map(event -> new EventResponseDTO(
+                event.getId(),
+                event.getTitle(),
+                event.getDescription(),
+                event.getDate(),
+                "",
+                "",
+                event.getRemote(),
+                event.getEventUrl(),
+                event.getImgUrl())).stream().toList();
+    }
 }
