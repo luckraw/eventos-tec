@@ -4,6 +4,7 @@ import com.luckraw.eventos_tec.domain.event.Event;
 import com.luckraw.eventos_tec.domain.event.EventRequestDTO;
 import com.luckraw.eventos_tec.domain.event.EventResponseDTO;
 import com.luckraw.eventos_tec.repositories.EventRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -51,6 +52,29 @@ public class EventService {
                 event.getDate(),
                 "",
                 "",
+                event.getRemote(),
+                event.getEventUrl(),
+                event.getImgUrl())).stream().toList();
+    }
+
+
+    public List<EventResponseDTO> getFilteredEvents(int page, int size, String title, String city, String uf, Date startDate, Date endDate) {
+
+        title = (title != null) ? title : "";
+        city = (city != null) ? city : "";
+        uf = (uf != null) ? uf : "";
+        startDate = (startDate != null) ? startDate : new Date(0);
+        endDate = (endDate != null) ? endDate : new Date();
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Event> eventsPage = eventRepository.findFilteredEvents(title, city, uf, startDate, endDate,  pageable);
+        return eventsPage.map(event -> new EventResponseDTO(
+                event.getId(),
+                event.getTitle(),
+                event.getDescription(),
+                event.getDate(),
+                event.getAddress() != null ? event.getAddress().getCity() : "",
+                event.getAddress() != null ? event.getAddress().getUf() : "",
                 event.getRemote(),
                 event.getEventUrl(),
                 event.getImgUrl())).stream().toList();
