@@ -19,6 +19,9 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository;
 
+    @Autowired
+    private AddressService addressService;
+
     public Event createEvent(EventRequestDTO data) {
         Event newEvent = new Event();
         newEvent.setTitle(data.title());
@@ -28,7 +31,13 @@ public class EventService {
         newEvent.setImgUrl(data.image());
         newEvent.setRemote(data.remote());
 
-        return eventRepository.save(newEvent);
+        eventRepository.save(newEvent);
+
+        if(!data.remote()) {
+            this.addressService.createAddress(data, newEvent);
+        }
+
+        return newEvent;
     }
 
 
