@@ -1,6 +1,8 @@
 package com.luckraw.eventos_tec.services;
 
+import com.luckraw.eventos_tec.domain.coupon.Coupon;
 import com.luckraw.eventos_tec.domain.event.Event;
+import com.luckraw.eventos_tec.domain.event.EventDetailsDTO;
 import com.luckraw.eventos_tec.domain.event.EventRequestDTO;
 import com.luckraw.eventos_tec.domain.event.EventResponseDTO;
 import com.luckraw.eventos_tec.repositories.EventRepository;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EventService {
@@ -22,6 +25,9 @@ public class EventService {
 
     @Autowired
     private AddressService addressService;
+
+    @Autowired
+    private CouponService couponService;
 
     public Event createEvent(EventRequestDTO data) {
         Event newEvent = new Event();
@@ -78,5 +84,32 @@ public class EventService {
                 event.getRemote(),
                 event.getEventUrl(),
                 event.getImgUrl())).stream().toList();
+    }
+
+    public EventDetailsDTO getEventDetails(Long eventId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new IllegalArgumentException("Event not found"));
+
+        List<Coupon> coupons = couponService.consultCoupons(eventId, new Date());
+
+        List<EventDetailsDTO.CouponDTO> couponDTOs = coupons.stream()
+                .map(coupon -> new EventDetailsDTO.CouponDTO(
+                        coupon.getCode(),
+                        coupon.getDiscount(),
+                        coupon.getValid()))
+                .collect(Collectors.toList());
+
+        return new EventDetailsDTO(
+                event.getId(),
+                event.getTitle(),
+                event.getDescription(),
+                event.getDate(),
+                event.getAddress() != null ? event.getAddress().getCity() : "",
+                event.getAddress() != null ? event.getAddress().getUf() : "",
+                event.getImgUrl(),
+                event.getEventUrl(),
+                couponDTOs
+
+        );
     }
 }

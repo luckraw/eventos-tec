@@ -1,6 +1,7 @@
 package com.luckraw.eventos_tec.controller;
 
 import com.luckraw.eventos_tec.domain.event.Event;
+import com.luckraw.eventos_tec.domain.event.EventDetailsDTO;
 import com.luckraw.eventos_tec.domain.event.EventRequestDTO;
 import com.luckraw.eventos_tec.domain.event.EventResponseDTO;
 import com.luckraw.eventos_tec.services.EventService;
@@ -29,6 +30,12 @@ public class EventController {
     public ResponseEntity<List<EventResponseDTO>> getEvents(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         List<EventResponseDTO> events = eventService.getUpcomingEvents(page, size);
         return ResponseEntity.ok(events);
+    }
+
+    @GetMapping("/{eventId}")
+    public ResponseEntity<EventDetailsDTO> getEventDetails(@PathVariable Long eventId) {
+        EventDetailsDTO eventDetails = eventService.getEventDetails(eventId);
+        return ResponseEntity.ok(eventDetails);
     }
 
     @GetMapping("/filter")
