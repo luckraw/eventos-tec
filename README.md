@@ -11,3 +11,20 @@ Projeto de um gerenciador de eventos tech, onde consiste em um backend de uma ap
 - PostgreSQL.
 - Flyway.
 
+## Funcionalidades.
+- Criação de um novo evento.
+```json
+{
+  "title": "",
+  "description": "",
+  "imgUrl": "",
+  "eventUrl": "",
+  "remote": false,
+  "date": "",
+}
+```
+- Listagem, filtragem e detalhamentos do evento.
+- Associação de cupons de desconto.
+
+
+
